@@ -13,6 +13,7 @@ from lnurl.types import (
     Lnurl,
     LnurlPayMetadata,
     OnionUrl,
+    Nostr1Url,
 )
 
 
@@ -23,7 +24,7 @@ class TestUrl:
         ["service.io:443", "service.io:9000"],
     )
     def test_parameters(self, hostport):
-        url = parse_obj_as(Union[DebugUrl, OnionUrl, ClearnetUrl], f"https://{hostport}/?q=3fc3645b439ce8e7&test=ok")
+        url = parse_obj_as(Union[DebugUrl, OnionUrl, Nostr1Url, ClearnetUrl], f"https://{hostport}/?q=3fc3645b439ce8e7&test=ok")
         assert url.host == "service.io"
         assert url.base == f"https://{hostport}/"
         assert url.query_params == {"q": "3fc3645b439ce8e7", "test": "ok"}
@@ -35,6 +36,7 @@ class TestUrl:
             "https://[2001:db8:0:1]:80",
             "https://protonirockerxow.onion/",
             "http://protonirockerxow.onion/",
+            "http://nprofile1qqsfh7spymm7dwn6u6nxrtauayc00j7w0ylshf9ewd83690p83tn70spz9mhxue69uhkummnw3ezuamfdejj7qgwwaehxw309ahx7uewd3hkctc6w2z8k/",
             "https://📙.la/⚡",  # https://emojipedia.org/high-voltage-sign/
             "https://xn--yt8h.la/%E2%9A%A1",
             "http://0.0.0.0",
@@ -42,8 +44,8 @@ class TestUrl:
         ],
     )
     def test_valid(self, url):
-        url = parse_obj_as(Union[OnionUrl, DebugUrl, ClearnetUrl], url)
-        assert isinstance(url, (OnionUrl, DebugUrl, ClearnetUrl))
+        url = parse_obj_as(Union[OnionUrl, Nostr1Url, DebugUrl, ClearnetUrl], url)
+        assert isinstance(url, (OnionUrl, Nostr1Url, DebugUrl, ClearnetUrl))
 
     @pytest.mark.parametrize(
         "url",
@@ -58,7 +60,7 @@ class TestUrl:
     )
     def test_invalid_data(self, url):
         with pytest.raises(ValidationError):
-            parse_obj_as(Union[DebugUrl, OnionUrl, ClearnetUrl], url)
+            parse_obj_as(Union[DebugUrl, OnionUrl, Nostr1Url, ClearnetUrl], url)
 
     @pytest.mark.parametrize(
         "url",
@@ -194,7 +196,7 @@ class TestLnurlPayMetadata:
     )
     def test_valid_lnaddress(self, lnaddress):
         lnaddress = LnAddress(lnaddress)
-        assert isinstance(lnaddress.url, (OnionUrl, DebugUrl, ClearnetUrl))
+        assert isinstance(lnaddress.url, (OnionUrl, Nostr1Url, DebugUrl, ClearnetUrl))
 
     @pytest.mark.parametrize(
         "lnaddress",

@@ -23,7 +23,7 @@ Basic usage
 -----------
 
 ```python
->>> import lnurl
+>>> import lnurl_nostr1 as lnurl
 >>> lnurl.encode('https://service.io/?q=3fc3645b439ce8e7')
 Lnurl('LNURL1DP68GURN8GHJ7UM9WFMXJCM99E5K7TELWY7NXENRXVMRGDTZXSENJCM98PJNWXQ96S9', bech32=Bech32('LNURL1DP68GURN8GHJ7UM9WFMXJCM99E5K7TELWY7NXENRXVMRGDTZXSENJCM98PJNWXQ96S9', hrp='lnurl', data=[13, 1, 26, 7, 8, 28, 3, 19, 7, 8, 23, 18, 30, 28, 27, 5, 14, 9, 27, 6, 18, 24, 27, 5, 5, 25, 20, 22, 30, 11, 25, 31, 14, 4, 30, 19, 6, 25, 19, 3, 6, 12, 27, 3, 8, 13, 11, 2, 6, 16, 25, 19, 18, 24, 27, 5, 7, 1, 18, 19, 14]), url=WebUrl('https://service.io/?q=3fc3645b439ce8e7', scheme='https', host='service.io', tld='io', host_type='domain', path='/', query='q=3fc3645b439ce8e7'))
 >>> lnurl.decode('LNURL1DP68GURN8GHJ7UM9WFMXJCM99E5K7TELWY7NXENRXVMRGDTZXSENJCM98PJNWXQ96S9')
@@ -33,7 +33,7 @@ WebUrl('https://service.io/?q=3fc3645b439ce8e7', scheme='https', host='service.i
 The `Lnurl` object wraps a bech32 LNURL to provide some extra utilities.
 
 ```python
-from lnurl import Lnurl
+from lnurl_nostr1 import Lnurl
 
 lnurl = Lnurl("LNURL1DP68GURN8GHJ7UM9WFMXJCM99E5K7TELWY7NXENRXVMRGDTZXSENJCM98PJNWXQ96S9")
 lnurl.bech32  # "LNURL1DP68GURN8GHJ7UM9WFMXJCM99E5K7TELWY7NXENRXVMRGDTZXSENJCM98PJNWXQ96S9"
@@ -55,7 +55,7 @@ with different properties (see `models.py`):
 ```python
 import httpx
 
-from lnurl import Lnurl, LnurlResponse
+from lnurl_nostr1 import Lnurl, LnurlResponse
 
 lnurl = Lnurl('LNURL1DP68GURN8GHJ7MRWW4EXCTNZD9NHXATW9EU8J730D3H82UNV94MKJARGV3EXZAELWDJHXUMFDAHR6WFHXQERSVPCA649RV')
 try:
@@ -78,14 +78,14 @@ If you have already `httpx` installed, you can also use the `.handle()` function
 It will return the appropriate response for a LNURL.
 
 ```python
->>> import lnurl
+>>> import lnurl_nostr1 as lnurl
 >>> lnurl.handle('lightning:LNURL1DP68GURN8GHJ7MRWW4EXCTNZD9NHXATW9EU8J730D3H82UNV94CXZ7FLWDJHXUMFDAHR6V33XCUNSVE38QV6UF')
 LnurlPayResponse(tag='payRequest', callback=WebUrl('https://lnurl.bigsun.xyz/lnurl-pay/callback/2169831', scheme='https', host='lnurl.bigsun.xyz', tld='xyz', host_type='domain', path='/lnurl-pay/callback/2169831'), min_sendable=10000, max_sendable=10000, metadata=LnurlPayMetadata('[["text/plain","NgHaEyaZNDnW iI DsFYdkI"],["image/png;base64","iVBOR...uQmCC"]]'))
 ```
 
 You can execute and LNURL with either payRequest, withdrawRequest or login tag using the `execute` function.
 ```python
->>> import lnurl
+>>> import lnurl_nostr1 as lnurl
 >>> lnurl.execute('lightning:LNURL1DP68GURN8GHJ7MRWW4EXCTNZD9NHXATW9EU8J730D3H82UNV94CXZ7FLWDJHXUMFDAHR6V33XCUNSVE38QV6UF', 100000)
 ```
 
@@ -95,7 +95,7 @@ Building your own LNURL responses
 For LNURL services, the `lnurl` package can be used to build **valid** responses.
 
 ```python
-from lnurl import LnurlWithdrawResponse
+from lnurl_nostr1 import LnurlWithdrawResponse
 
 res = LnurlWithdrawResponse(
     callback="https://lnurl.bigsun.xyz/lnurl-withdraw/callback/9702808",
@@ -138,8 +138,8 @@ the `by_alias` parameter: `res.dict(by_alias=False)` (it is `True` by default).
 CLI
 ---------
 ```console
-$ poetry run lnurl
-Usage: lnurl [OPTIONS] COMMAND [ARGS]...
+$ poetry run lnurl_nostr1
+Usage: lnurl_nostr1 [OPTIONS] COMMAND [ARGS]...
 
   Python CLI for LNURL decode and encode lnurls
 

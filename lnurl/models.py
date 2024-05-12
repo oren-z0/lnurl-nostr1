@@ -13,6 +13,7 @@ from .types import (
     LightningNodeUri,
     LnurlPayMetadata,
     Max144Str,
+    Nostr1Url,
     OnionUrl,
 )
 
@@ -40,7 +41,7 @@ class MessageAction(LnurlPaySuccessAction):
 
 class UrlAction(LnurlPaySuccessAction):
     tag: Literal["url"] = "url"
-    url: Union[ClearnetUrl, OnionUrl, DebugUrl]
+    url: Union[ClearnetUrl, OnionUrl, Nostr1Url, DebugUrl]
     description: Max144Str
 
 
@@ -81,14 +82,14 @@ class LnurlSuccessResponse(LnurlResponseModel):
 
 class LnurlAuthResponse(LnurlResponseModel):
     tag: Literal["login"] = "login"
-    callback: Union[ClearnetUrl, OnionUrl, DebugUrl]
+    callback: Union[ClearnetUrl, OnionUrl, Nostr1Url, DebugUrl]
     k1: str
 
 
 class LnurlChannelResponse(LnurlResponseModel):
     tag: Literal["channelRequest"] = "channelRequest"
     uri: LightningNodeUri
-    callback: Union[ClearnetUrl, OnionUrl, DebugUrl]
+    callback: Union[ClearnetUrl, OnionUrl, Nostr1Url, DebugUrl]
     k1: str
 
 
@@ -101,7 +102,7 @@ class LnurlHostedChannelResponse(LnurlResponseModel):
 
 class LnurlPayResponse(LnurlResponseModel):
     tag: Literal["payRequest"] = "payRequest"
-    callback: Union[ClearnetUrl, OnionUrl, DebugUrl]
+    callback: Union[ClearnetUrl, OnionUrl, Nostr1Url, DebugUrl]
     min_sendable: MilliSatoshi = Field(..., alias="minSendable", gt=0)
     max_sendable: MilliSatoshi = Field(..., alias="maxSendable", gt=0)
     metadata: LnurlPayMetadata
@@ -143,7 +144,7 @@ class LnurlPayActionResponse(LnurlResponseModel):
 
 class LnurlWithdrawResponse(LnurlResponseModel):
     tag: Literal["withdrawRequest"] = "withdrawRequest"
-    callback: Union[ClearnetUrl, OnionUrl, DebugUrl]
+    callback: Union[ClearnetUrl, OnionUrl, Nostr1Url, DebugUrl]
     k1: str
     min_withdrawable: MilliSatoshi = Field(..., alias="minWithdrawable", gt=0)
     max_withdrawable: MilliSatoshi = Field(..., alias="maxWithdrawable", gt=0)

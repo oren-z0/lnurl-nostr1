@@ -15,13 +15,13 @@ from .models import (
     LnurlResponseModel,
     LnurlWithdrawResponse,
 )
-from .types import ClearnetUrl, DebugUrl, LnAddress, Lnurl, OnionUrl
+from .types import ClearnetUrl, DebugUrl, LnAddress, Lnurl, OnionUrl, Nostr1Url
 
 USER_AGENT = "lnbits/lnurl"
 TIMEOUT = 5
 
 
-def decode(bech32_lnurl: str) -> Union[OnionUrl, ClearnetUrl, DebugUrl]:
+def decode(bech32_lnurl: str) -> Union[Nostr1Url, OnionUrl, ClearnetUrl, DebugUrl]:
     try:
         return Lnurl(bech32_lnurl).url
     except (ValidationError, ValueError):

@@ -1,17 +1,17 @@
 [tool.poetry]
-name = "lnurl"
-version = "0.5.1"
-description = "LNURL implementation for Python."
-authors = ["Alan Bits <alan@lnbits.com>"]
+name = "lnurl_nostr1"
+version = "0.5.1rc1"
+description = "LNURL implementation for Python, with support for future nostr1 protocol."
+authors = ["Alan Bits <alan@lnbits.com>", "Oren <orenz0@protonmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [
-  {include = "lnurl"},
-  {include = "lnurl/py.typed"},
+  {include = "*.py", from = "lnurl", to = "lnurl_nostr1"},
+  {include = "py.typed", from = "lnurl", to = "lnurl_nostr1/py.typed"},
 ]
 
 [tool.poetry.scripts]
-lnurl = "lnurl.cli:main"
+lnurl = "lnurl_nostr1.cli:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"

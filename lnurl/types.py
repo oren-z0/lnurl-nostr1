@@ -126,6 +126,17 @@ class OnionUrl(Url):
             raise UrlHostTldError()
         return host, tld, host_type, rebuild
 
+class Nostr1Url(Url):
+    """Nostr DM service, version 1."""
+
+    allowed_schemes = {"http"}
+
+    @classmethod
+    def validate_host(cls, parts: Parts) -> Tuple[str, Optional[str], str, bool]:
+        host, tld, host_type, rebuild = super().validate_host(parts)
+        if tld != "nostr1":
+            raise UrlHostTldError()
+        return host, tld, host_type, rebuild
 
 class LightningInvoice(Bech32):
     """Bech32 Lightning invoice."""
@@ -167,16 +178,16 @@ class Lnurl(ReprMixin, str):
     def __new__(cls, lightning: str, **_) -> "Lnurl":
         return str.__new__(cls, _lnurl_clean(lightning))
 
-    def __init__(self, lightning: str, *, url: Optional[Union[OnionUrl, ClearnetUrl, DebugUrl]] = None):
+    def __init__(self, lightning: str, *, url: Optional[Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl]] = None):
         bech32 = _lnurl_clean(lightning)
         str.__init__(bech32)
         self.bech32 = Bech32(bech32)
         self.url = url if url else self.__get_url__(bech32)
 
     @classmethod
-    def __get_url__(cls, bech32: str) -> Union[OnionUrl, ClearnetUrl, DebugUrl]:
+    def __get_url__(cls, bech32: str) -> Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl]:
         url: str = lnurl_decode(bech32)
-        return parse_obj_as(Union[OnionUrl, ClearnetUrl, DebugUrl], url)  # type: ignore
+        return parse_obj_as(Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl], url)  # type: ignore
 
     @classmethod
     def __get_validators__(cls):
@@ -209,10 +220,10 @@ class LnAddress(ReprMixin, str):
         return re.fullmatch(email_regex, email) is not None
 
     @classmethod
-    def __get_url__(cls, address: str) -> Union[OnionUrl, ClearnetUrl, DebugUrl]:
+    def __get_url__(cls, address: str) -> Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl]:
         name, domain = address.split("@")
         url = ("http://" if domain.endswith(".onion") else "https://") + domain + "/.well-known/lnurlp/" + name
-        return parse_obj_as(Union[OnionUrl, ClearnetUrl, DebugUrl], url)  # type: ignore
+        return parse_obj_as(Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl], url)  # type: ignore
 
 
 class LnurlPayMetadata(ReprMixin, str):
