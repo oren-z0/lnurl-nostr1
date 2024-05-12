@@ -222,7 +222,7 @@ class LnAddress(ReprMixin, str):
     @classmethod
     def __get_url__(cls, address: str) -> Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl]:
         name, domain = address.split("@")
-        url = ("http://" if domain.endswith(".onion") else "https://") + domain + "/.well-known/lnurlp/" + name
+        url = ("http://" if (domain.endswith(".onion") or domain.endswith(".nostr")) else "https://") + domain + "/.well-known/lnurlp/" + name
         return parse_obj_as(Union[OnionUrl, Nostr1Url, ClearnetUrl, DebugUrl], url)  # type: ignore
 
 
