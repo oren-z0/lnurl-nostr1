@@ -134,7 +134,7 @@ class Nostr1Url(Url):
     @classmethod
     def validate_host(cls, parts: Parts) -> Tuple[str, Optional[str], str, bool]:
         host, tld, host_type, rebuild = super().validate_host(parts)
-        if tld != "nostr1":
+        if tld != "nostr":
             raise UrlHostTldError()
         return host, tld, host_type, rebuild
 
