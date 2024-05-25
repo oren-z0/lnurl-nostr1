@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lnurl_nostr1"
-version = "0.5.1rc2"
+version = "0.5.1rc3"
 description = "LNURL implementation for Python, with support for future nostr1 protocol."
 authors = ["Alan Bits <alan@lnbits.com>", "Oren <orenz0@protonmail.com>"]
 license = "MIT"
