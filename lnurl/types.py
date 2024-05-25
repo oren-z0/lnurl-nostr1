@@ -13,7 +13,7 @@ from pydantic import (
     parse_obj_as,
     validator,
 )
-from pydantic.errors import UrlHostTldError, UrlSchemeError
+from pydantic.errors import UrlHostTldError, UrlSchemeError, UrlHostError
 from pydantic.networks import Parts
 from pydantic.validators import str_validator
 
@@ -126,6 +126,8 @@ class OnionUrl(Url):
             raise UrlHostTldError()
         return host, tld, host_type, rebuild
 
+nostr1_domain_re = re.compile(r"^[0-9a-zA-Z]{1,65536}\.nostr$")
+
 class Nostr1Url(Url):
     """Nostr DM service, version 1."""
 
@@ -133,7 +135,13 @@ class Nostr1Url(Url):
 
     @classmethod
     def validate_host(cls, parts: Parts) -> Tuple[str, Optional[str], str, bool]:
-        host, tld, host_type, rebuild = super().validate_host(parts)
+        parts_copy = parts.copy()
+        is_simple_nostr_domain = parts_copy["domain"] and nostr1_domain_re.match(parts_copy["domain"])
+        if is_simple_nostr_domain:
+            parts_copy["domain"] = "x.nostr"
+        host, tld, host_type, rebuild = super().validate_host(parts_copy)
+        if is_simple_nostr_domain and host == "x.nostr":
+            host = parts["domain"]
         if tld != "nostr":
             raise UrlHostTldError()
         return host, tld, host_type, rebuild
